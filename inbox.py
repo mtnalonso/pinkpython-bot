@@ -9,8 +9,7 @@ from nlp import NLPFactory
 from twitter_snake import send_response
 
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logging.basicConfig(filename='python_memories.log', level=logging.INFO)
 
 inbox_queue = Queue()
 
