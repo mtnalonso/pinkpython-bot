@@ -16,6 +16,11 @@ inbox_queue = Queue()
 
 
 class Message:
+    """
+    Message format to send over processors
+     - text:        original message text
+     - original:    twitter / telegram message class
+    """
     def __init__(self, text, original=None):
         self.text = text
         self.original = original
@@ -31,6 +36,7 @@ class MessageProcessor(Thread):
         self.nlp = NLPFactory().create()
 
     def run(self):
+        logger.info('[Processing]: ' + self.message.text)
         nlp_response = self.request_nlp_response()
         send_response(nlp_response, self.message.original)
         return
@@ -44,27 +50,37 @@ class MessageProcessor(Thread):
 
 
 class MessageConsumer(Thread):
+    """
+    Get tweets from the inbox queue and process each one in a new thread
+    """
     def __init__(self, queue=inbox_queue):
         self.queue = queue
         self.running = True
         Thread.__init__(self)
 
     def run(self):
-        "get tweet from queue, start a thread which process the tweet"
         while self.running:
-            if not self.queue.empty():
-                message = self.queue.get()
-                logger.info('[Getting]: ' + message.text)
-                processor = MessageProcessor(message)
-                processor.start()
-                sleep(1)
+            self.check_queue()
+            sleep(1)
         return
+
+    def check_queue(self):
+        if not self.queue.empty():
+            self.process_message()
+
+    def process_message(self):
+        message = self.queue.get()
+        processor = MessageProcessor(message)
+        processor.start()
 
     def stop(self):
         self.running = False
 
 
 class TwitterListener(tweepy.StreamListener):
+    """
+    Stream twitter mentions and put each mention message in the inbox queue
+    """
     def __init__(self, queue=inbox_queue):
         super().__init__()
         self.queue = queue
@@ -76,6 +92,6 @@ class TwitterListener(tweepy.StreamListener):
 
     def on_error(self, status_code):
         print('ERROR', status_code)
-        if status_code == 420:  # Enhance Your Calm!
+        if status_code == 420:
             logger.error("[420]:\tEnhance Your Calm!")
             return False

@@ -25,9 +25,6 @@ class NLPResponseError(Exception):
 
 class NLP(ABC):
     def __init__(self, language='en', session_id='pink'):
-        """
-        handle configuration
-        """
         self.language = language
         self.session_id = session_id
 
@@ -49,13 +46,13 @@ class APINLP(NLP):
         return response
 
     def send_request(self, message):
-        request = self.build_request()
-        request.query = message
+        request = self.build_request(message)
         response = request.getresponse()
         return json.loads(response.read().decode('utf-8'))
 
-    def build_request(self):
+    def build_request(self, message):
         request = self.ai.text_request()
+        request.query = message
         request.lang = self.language
         request.session_id = self.session_id
         return request
