@@ -10,6 +10,7 @@ from twitter_snake import send_response
 
 
 logging.basicConfig(filename='python_memories.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 inbox_queue = Queue()
 
