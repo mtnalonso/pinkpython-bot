@@ -9,7 +9,7 @@ from nlp import NLPFactory
 from twitter_snake import send_response
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 inbox_queue = Queue()
@@ -54,7 +54,7 @@ class MessageConsumer(Thread):
         while self.running:
             if not self.queue.empty():
                 message = self.queue.get()
-                logger.debug('[Getting]: ' + message.text)
+                logger.info('[Getting]: ' + message.text)
                 processor = MessageProcessor(message)
                 processor.start()
                 sleep(1)
@@ -70,7 +70,7 @@ class TwitterListener(tweepy.StreamListener):
         self.queue = queue
 
     def on_status(self, status):
-        logger.debug('@[' + status.user.screen_name + ']:' + status.text)
+        logger.info('@[' + status.user.screen_name + ']:' + status.text)
         message = Message(status.text, status)
         inbox_queue.put(message)
 

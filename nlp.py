@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import json
+from configparser import ConfigParser
 import apiai
 
 
@@ -84,6 +85,8 @@ class RasaNLP(NLP):
 
 
 class NLPFactory:
+    config = ConfigParser()
+    config.read('pinkpython.conf')
     CLASSES = {
         'api': APINLP,
         'rasa': RasaNLP
@@ -91,8 +94,6 @@ class NLPFactory:
 
     @staticmethod
     def create():
-        # apply configuration
-        #nlp = config.get('nlp')
-        nlp = 'api'
-        clazz = NLPFactory.CLASSES.get(nlp)
-        return clazz()
+        nlp_label = NLPFactory.config.get('nlp', 'nlp')
+        nlp = NLPFactory.CLASSES.get(nlp_label)
+        return nlp()
