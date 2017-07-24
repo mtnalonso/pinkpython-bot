@@ -86,7 +86,7 @@ class RasaNLP(NLP):
         config.read('pinkpython.conf')
         self.host = config.get('nlp', 'rasa_host')
         self.port = config.get('nlp', 'rasa_port')
-        self.url = self.build_url
+        self.url = self.build_url()
 
     def send_request(self, message):
         http_response = requests.get(self.url + message)
@@ -102,7 +102,7 @@ class RasaNLP(NLP):
         return response
 
     def build_url(self):
-        return ('http://' + self.host + ':' + self.port + '/parse?q=')
+        return str('http://' + self.host + ':' + self.port + '/parse?q=')
 
 
 class NLPFactory:

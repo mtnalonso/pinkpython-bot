@@ -5,7 +5,7 @@ import logging
 
 import tweepy
 
-from nlp import NLPFactory
+from nlp import NLPFactory, NLPResponseError
 from twitter_snake import send_response
 
 
