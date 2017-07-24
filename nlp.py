@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 from configparser import ConfigParser
+import requests
 import apiai
 
 
@@ -28,10 +29,28 @@ class NLP(ABC):
         self.language = language
         self.session_id = session_id
 
-    @abstractmethod
     def process(self, message):
+        response = self.send_request(message)
+        self.validate_response(response)
+        response = self.process_response(response)
+        return response
+
+    @abstractmethod
+    def send_request(self, message):
         pass
 
+    @abstractmethod
+    def validate_response(self, response):
+        pass
+
+    @abstractmethod
+    def process_response(self, response):
+        pass
+
+    def validate_response(self, response):
+        if response['status']['code'] != 200:
+            raise NLPResponseError('status code ' +
+                                   response['status']['code'])
 
 class APINLP(NLP):
     def __init__(self):
@@ -39,16 +58,19 @@ class APINLP(NLP):
         from credentials import apiai_access_token_developer
         self.ai = apiai.ApiAI(apiai_access_token_developer)
 
-    def process(self, message):
-        ai_response = self.send_request(message)
-        self.validate_response(ai_response)
-        response = self.process_nlp_response(ai_response)
-        return response
-
     def send_request(self, message):
         request = self.build_request(message)
         response = request.getresponse()
         return json.loads(response.read().decode('utf-8'))
+
+    def process_response(self, response):
+        result = response['result']
+        parameters = result['parameters']
+        action = result['action']
+        query = result['resolvedQuery']
+        response = NLPResponse(action, query=query, parameters=parameters)
+        response.generated_response = result['fulfillment']['speech']
+        return response
 
     def build_request(self, message):
         request = self.ai.text_request()
@@ -57,28 +79,30 @@ class APINLP(NLP):
         request.session_id = self.session_id
         return request
 
-    def process_nlp_response(self, ai_response):
-        result = ai_response['result']
-        parameters = result['parameters']
-        action = result['action']
-        query = result['resolvedQuery']
-        response = NLPResponse(action, query=query, parameters=parameters)
-        response.generated_response = result['fulfillment']['speech']
-        return response
-
-    def validate_response(self, ai_response):
-        if ai_response['status']['code'] != 200:
-            raise NLPResponseError('status code ' +
-                                   ai_response['status']['code'])
-
-
 class RasaNLP(NLP):
     def __init__(self):
         super(RasaNLP, self).__init__()
-        raise NotImplementedError
+        config = ConfigParser()
+        config.read('pinkpython.conf')
+        self.host = config.get('nlp', 'rasa_host')
+        self.port = config.get('nlp', 'rasa_port')
+        self.url = self.build_url
 
-    def process(self, message):
-        raise NotImplementedError
+    def send_request(self, message):
+        http_response = requests.get(self.url + message)
+        return json.loads(http_response.text)
+
+    def process_response(self, response):
+        result = response['result']
+        parameters = result['parameters']
+        action = result['metadata']['intentName']['name']
+        query = result['resolvedQuery']
+        response = NLPResponse(action, query=query, parameters=parameters)
+        response.generated_response = 'THIS IS A RASA TEST'
+        return response
+
+    def build_url(self):
+        return ('http://' + self.host + ':' + self.port + '/parse?q=')
 
 
 class NLPFactory:
