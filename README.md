@@ -5,10 +5,12 @@ A python bot which needs to be feeded :snake:
 
 - Python3
 - pip (working with Python3)
+- A twitter app account
+- An Api.ai account (in case of use it as NLP)
 
 ## Installation
 
-    git clone https://martinalonso_v@bitbucket.org/martinalonso_v/pinkpython-bot.git
+    git clone https://github.com/mtnalonso/pinkpython-bot.git
     cd pinkpython-bot
     pip install -r requirements.txt
 
