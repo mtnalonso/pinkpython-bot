@@ -1,0 +1,42 @@
+{
+  "userSays": [
+    {
+      "id": "77cea7c0-f4cf-47e8-93f0-a2d03356562d",
+      "data": [
+        {
+          "text": "How are you?"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "38e61e5b-6e8c-458d-8719-7ad98cbe13df",
+  "name": "greeting",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "greeting",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": [
+            "FEED MEEE!!",
+            "meh",
+            "I have an anti-stress pinapple toy"
+          ]
+        }
+      ],
+      "defaultResponsePlatforms": {}
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": []
+}

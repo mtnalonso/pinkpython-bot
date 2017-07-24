@@ -1,0 +1,38 @@
+{
+  "userSays": [
+    {
+      "id": "ccc7902f-acbb-4abe-abb7-0e35deceb6de",
+      "data": [
+        {
+          "text": "test"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "5195ad5d-92fc-40e6-9a20-44d4e6b4a5b0",
+  "name": "test",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "test",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": "Alive and eating!"
+        }
+      ],
+      "defaultResponsePlatforms": {}
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": []
+}

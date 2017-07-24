@@ -1,0 +1,97 @@
+{
+  "userSays": [
+    {
+      "id": "6debfb72-b80e-45bb-800e-c61e60e218ca",
+      "data": [
+        {
+          "text": "rat",
+          "alias": "food",
+          "meta": "@food",
+          "userDefined": true
+        },
+        {
+          "text": " "
+        },
+        {
+          "text": "mouse",
+          "alias": "food",
+          "meta": "@food",
+          "userDefined": false
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "01bd83f7-cfeb-41d8-a10d-fda06b5bf805",
+      "data": [
+        {
+          "text": "rat",
+          "alias": "food",
+          "meta": "@food",
+          "userDefined": true
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "cf516108-3253-49c0-90f9-ee718e2d2166",
+      "data": [
+        {
+          "text": "Here\u0027s a "
+        },
+        {
+          "text": "mouse",
+          "alias": "food",
+          "meta": "@food",
+          "userDefined": true
+        },
+        {
+          "text": " for u"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "270840cf-9018-46ce-97a9-db5c4f616329",
+  "name": "feed",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "feed",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "required": true,
+          "dataType": "@food",
+          "name": "food",
+          "value": "$food",
+          "prompts": [
+            "WHAT?"
+          ],
+          "isList": true
+        }
+      ],
+      "messages": [
+        {
+          "type": 0,
+          "speech": [
+            "yum-yum",
+            "such a delicious $food",
+            "GIVE ME MORE!"
+          ]
+        }
+      ],
+      "defaultResponsePlatforms": {}
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": []
+}

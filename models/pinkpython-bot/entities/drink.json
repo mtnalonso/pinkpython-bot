@@ -1,0 +1,22 @@
+{
+  "id": "55cba7e9-267a-484b-802f-aa1fa526cdb7",
+  "name": "drink",
+  "isOverridable": true,
+  "entries": [
+    {
+      "value": "water",
+      "synonyms": [
+        "water",
+        "glass of water"
+      ]
+    },
+    {
+      "value": "wine",
+      "synonyms": [
+        "wine"
+      ]
+    }
+  ],
+  "isEnum": false,
+  "automatedExpansion": false
+}

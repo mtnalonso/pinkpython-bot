@@ -1,0 +1,47 @@
+{
+  "id": "6756e309-95ed-40a2-a27d-98a4a295b36b",
+  "name": "food",
+  "isOverridable": true,
+  "entries": [
+    {
+      "value": "mouse",
+      "synonyms": [
+        "mouse"
+      ]
+    },
+    {
+      "value": "meat",
+      "synonyms": [
+        "meat"
+      ]
+    },
+    {
+      "value": "rat",
+      "synonyms": [
+        "rat"
+      ]
+    },
+    {
+      "value": "bird",
+      "synonyms": [
+        "bird"
+      ]
+    },
+    {
+      "value": "chick",
+      "synonyms": [
+        "chick",
+        "baby chick"
+      ]
+    },
+    {
+      "value": "cookie",
+      "synonyms": [
+        "cookie",
+        "cookies"
+      ]
+    }
+  ],
+  "isEnum": false,
+  "automatedExpansion": false
+}
