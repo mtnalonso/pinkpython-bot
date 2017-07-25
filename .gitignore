@@ -1,5 +1,6 @@
 credentials.py
 
+rasa_nlu/
 __pycache__/
 *.pyc
 

@@ -6,6 +6,7 @@ import logging
 import tweepy
 
 from nlp import NLPFactory, NLPResponseError
+from model.message import Message
 from twitter_snake import send_response
 
 
@@ -16,20 +17,6 @@ logger = logging.getLogger(__name__)
 inbox_queue = Queue()
 
 
-class Message:
-    """
-    Message format to send over processors
-     - text:        original message text
-     - original:    twitter / telegram message class
-    """
-    def __init__(self, text, original=None):
-        self.text = text
-        self.original = original
-
-    def __repr__(self):
-        raise NotImplementedError
-
-
 class MessageProcessor(Thread):
     def __init__(self, message):
         self.message = message
@@ -38,19 +25,19 @@ class MessageProcessor(Thread):
 
     def run(self):
         logger.info('[Processing]: ' + self.message.text)
-        nlp_response = self.request_nlp_response()
-        send_response(nlp_response, self.message.original)
+        self.execute_nlp()
+        # TODO: send message to action processing
+        send_response(self.message)
         return
 
-    def request_nlp_response(self):
+    def execute_nlp(self):
         try:
-            nlp_response = self.nlp.process(self.message.text)
+            self.message = self.nlp.process(self.message)
         except NLPResponseError:
             raise NotImplementedError
-        return nlp_response
 
 
-class MessageConsumer(Thread):
+class InboxConsumer(Thread):
     """
     Get tweets from the inbox queue and process each one in a new thread
     """
@@ -88,7 +75,7 @@ class TwitterListener(tweepy.StreamListener):
 
     def on_status(self, status):
         logger.info('@[' + status.user.screen_name + ']:' + status.text)
-        message = Message(status.text, status)
+        message = Message(status.text, platform='twitter', original=status)
         inbox_queue.put(message)
 
     def on_error(self, status_code):

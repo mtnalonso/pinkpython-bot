@@ -12,11 +12,9 @@ api = tweepy.API(auth)
 def put_tweet(tweet):
     api.update_status(status=tweet)
 
-def send_response(message, status):
-    tweet_id = status.id
-    response = ('@' + status.user.screen_name + ' '
-                + message.generated_response)
-    api.update_status(response, tweet_id)
+def send_response(message):
+    reply_id, tweet = message.get_tweet_reply()
+    api.update_status(tweet, reply_id)
 
 def init_twitter_listener():
     listener = TwitterListener()
@@ -24,7 +22,7 @@ def init_twitter_listener():
     stream.filter(track=['pinkpythonbot'], async=True)
 
 if __name__ == '__main__':
-    from inbox import TwitterListener, MessageConsumer
+    from inbox import TwitterListener, InboxConsumer
     init_twitter_listener()
-    consumer = MessageConsumer()
+    consumer = InboxConsumer()
     consumer.start()

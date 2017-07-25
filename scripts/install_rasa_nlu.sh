@@ -14,4 +14,4 @@ pip install scikit-learn
 pip install sklearn-crfsuite
 
 cp scripts/config_pinkpython_rasa.json rasa_nlu/
-cp -r models/pinkpython-bot/ rasa_nlu/data/
+cp -r nlp_models/pinkpython-bot/ rasa_nlu/data/

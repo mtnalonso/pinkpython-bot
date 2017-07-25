@@ -1,22 +1,11 @@
 from abc import ABC, abstractmethod
 import json
 from configparser import ConfigParser
+from pprint import pprint
 import requests
 import apiai
 
-
-class NLPResponse:
-    def __init__(self, action, query='', parameters={}, language='en'):
-        self.action = action
-        self.query = query
-        self.parameters = parameters
-        self.language = language
-        self.generated_response = None
-        self.platform = None
-
-    def __repr__(self):
-        return ('action:\t' + str(self.action) + '\nquery:\t' +
-                str(self.query) + '\nparams:\t' + str(self.parameters))
+from model.message import Message
 
 
 class NLPResponseError(Exception):
@@ -30,27 +19,31 @@ class NLP(ABC):
         self.session_id = session_id
 
     def process(self, message):
-        response = self.send_request(message)
+        response = self.send_request(message.text)
         self.validate_response(response)
-        response = self.process_response(response)
-        return response
+        message = self.add_nlp_data(response, message)
+        return message
+
+    def add_nlp_data(self, response, message):
+        result = response['result']
+        message.action = self.get_action(result)
+        message.parameters = result['parameters']
+        message.query = result['resolvedQuery']
+        return message
+
+    def validate_response(self, response):
+        if response['status']['code'] != 200:
+            raise NLPResponseError('status code ' +
+                                   response['status']['code'])
 
     @abstractmethod
     def send_request(self, message):
         pass
 
     @abstractmethod
-    def validate_response(self, response):
+    def get_action(self, response):
         pass
 
-    @abstractmethod
-    def process_response(self, response):
-        pass
-
-    def validate_response(self, response):
-        if response['status']['code'] != 200:
-            raise NLPResponseError('status code ' +
-                                   response['status']['code'])
 
 class APINLP(NLP):
     def __init__(self):
@@ -63,14 +56,8 @@ class APINLP(NLP):
         response = request.getresponse()
         return json.loads(response.read().decode('utf-8'))
 
-    def process_response(self, response):
-        result = response['result']
-        parameters = result['parameters']
-        action = result['action']
-        query = result['resolvedQuery']
-        response = NLPResponse(action, query=query, parameters=parameters)
-        response.generated_response = result['fulfillment']['speech']
-        return response
+    def get_action(self, result):
+        return result['action']
 
     def build_request(self, message):
         request = self.ai.text_request()
@@ -92,14 +79,8 @@ class RasaNLP(NLP):
         http_response = requests.get(self.url + message)
         return json.loads(http_response.text)
 
-    def process_response(self, response):
-        result = response['result']
-        parameters = result['parameters']
-        action = result['metadata']['intentName']['name']
-        query = result['resolvedQuery']
-        response = NLPResponse(action, query=query, parameters=parameters)
-        response.generated_response = 'THIS IS A RASA TEST'
-        return response
+    def get_action(self, result):
+        return result['metadata']['intentName']['name']
 
     def build_url(self):
         return str('http://' + self.host + ':' + self.port + '/parse?q=')
