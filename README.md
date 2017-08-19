@@ -4,7 +4,7 @@ A python bot which needs to be feeded :snake:
 ## Requirements
 
 - Python3
-- pip (working with Python3)
+- pip
 - A twitter app account
 - An Api.ai account (in case of use it as NLP)
 
@@ -21,9 +21,11 @@ Create a credentials.py file as follows:
     access_token = 'YOUT_TWITTER_ACCESS_TOKEN'
     access_token_secret = 'YOUT_TWITTER_ACCESS_TOKEN_SECRET'
 
+    # only necessary if using API.ai
     apiai_access_token_developer = 'YOUR_APIAI_DEV_TOKEN'
     apiai_access_token_client = 'YOUR_APIAI_PROD_TOKEN'
 
 ## Run
 
-    python3 twitter_snake.py
+    cd pinkpython
+    python3 pinkpython.py

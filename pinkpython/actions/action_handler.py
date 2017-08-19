@@ -1,6 +1,7 @@
 from actions.feed import Feed
 from actions.action_test import Test
 from actions.error import Error
+from actions.greeting import Greeting
 import outbox
 
 
@@ -13,6 +14,7 @@ class ActionHandler:
         actions = {}
         actions['feed'] = Feed()
         actions['test'] = Test()
+        actions['greeting'] = Greeting()
         return actions
 
     def process_message(self, message):
