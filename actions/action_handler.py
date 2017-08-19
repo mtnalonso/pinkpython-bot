@@ -1,17 +1,13 @@
 from model.message import Message
-from outbox import Outbox
+from outbox import outbox
 from actions.feed import Feed
 from actions.action_test import Test
-
-
-outbox = Outbox()
 
 
 class ActionHandler:
     def __init__(self, outbox=outbox):
         self.actions = self.__load_actions()
         self.outbox = outbox
-        self.outbox.start()
 
     def __load_actions(self):
         actions = {}

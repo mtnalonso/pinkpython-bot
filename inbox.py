@@ -51,13 +51,13 @@ class InboxConsumer(Thread):
 
     def run(self):
         while self.running:
-            self.check_queue()
-            sleep(1)
+            self.process_next_message()
         return
 
-    def check_queue(self):
+    def process_next_message(self):
         if not self.queue.empty():
             self.process_message()
+        sleep(1)
 
     def process_message(self):
         message = self.queue.get()
