@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from queue import Queue
 from threading import Thread
 from time import sleep
@@ -6,11 +5,11 @@ from time import sleep
 import twitter_snake as twitter_connector
 
 
-outbox = Queue()
+outbox_queue = Queue()
 
 
 class OutboxConsumer(Thread):
-    def __init__(self, queue=outbox):
+    def __init__(self, queue=outbox_queue):
         self.queue = queue
         self.running = True
         self.twitter_connector = twitter_connector
@@ -42,7 +41,3 @@ class OutboxConsumer(Thread):
 
     def stop(self):
         self.running = False
-
-
-outbox_consumer = OutboxConsumer()
-outbox_consumer.start()

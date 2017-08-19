@@ -1,13 +1,13 @@
 from model.message import Message
-from outbox import outbox
+from outbox import outbox_queue
 from actions.feed import Feed
 from actions.action_test import Test
 
 
 class ActionHandler:
-    def __init__(self, outbox=outbox):
+    def __init__(self, outbox_queue=outbox_queue):
         self.actions = self.__load_actions()
-        self.outbox = outbox
+        self.outbox_queue = outbox_queue
 
     def __load_actions(self):
         actions = {}
@@ -31,4 +31,4 @@ class ActionHandler:
         return self.actions[intent]
 
     def __send_message(self, message):
-        self.outbox.put(message)
+        self.outbox_queue.put(message)

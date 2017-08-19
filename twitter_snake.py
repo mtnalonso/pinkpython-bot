@@ -27,6 +27,9 @@ def init_twitter_listener():
 
 if __name__ == '__main__':
     from inbox import TwitterListener, InboxConsumer
+    from outbox import OutboxConsumer
     init_twitter_listener()
-    consumer = InboxConsumer()
-    consumer.start()
+    inbox_consumer = InboxConsumer()
+    outbox_consumer = OutboxConsumer()
+    inbox_consumer.start()
+    outbox_consumer.start()
