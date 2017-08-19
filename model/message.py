@@ -29,4 +29,6 @@ class Message:
         return reply_id, username
 
     def __build_tweet(self, username):
+        if self.text == self.query:
+            self.text = '[UNDER DEVELOP]'
         return ('@' + username + ' ' + self.text)
