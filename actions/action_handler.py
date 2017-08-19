@@ -31,4 +31,4 @@ class ActionHandler:
         return self.actions[intent]
 
     def __send_message(self, message):
-        self.outbox.put_message(message)
+        self.outbox.put(message)
