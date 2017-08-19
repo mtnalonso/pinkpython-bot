@@ -7,7 +7,7 @@ class RasaNLP(NLP):
     def __init__(self):
         super(RasaNLP, self).__init__()
         config = ConfigParser()
-        config.read('pinkpython.conf')
+        config.read('configuration.conf')
         self.host = config.get('nlp', 'rasa_host')
         self.port = config.get('nlp', 'rasa_port')
         self.url = self.build_url()

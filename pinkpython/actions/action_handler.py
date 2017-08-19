@@ -1,11 +1,11 @@
-from model.message import Message
-from outbox import outbox_queue
 from actions.feed import Feed
 from actions.action_test import Test
+from actions.error import Error
+import outbox
 
 
 class ActionHandler:
-    def __init__(self, outbox_queue=outbox_queue):
+    def __init__(self, outbox_queue=outbox.outbox_queue):
         self.actions = self.__load_actions()
         self.outbox_queue = outbox_queue
 
@@ -28,7 +28,14 @@ class ActionHandler:
         return response
 
     def __get_action(self, intent):
-        return self.actions[intent]
+        try:
+            action = self.actions[intent]
+        except KeyError:
+            action = self.__get_error_action()
+        return action
+
+    def __get_error_action(self):
+        return Error()
 
     def __send_message(self, message):
         self.outbox_queue.put(message)

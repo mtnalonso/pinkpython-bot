@@ -2,7 +2,7 @@ from threading import Thread
 import logging
 
 from nlp.nlp import NLPFactory, NLPResponseError
-from actions.action_handler import ActionHandler
+import actions.action_handler
 
 
 logging.basicConfig(filename='python_memories.log', filemode='w',
@@ -15,7 +15,7 @@ class MessageProcessor(Thread):
         self.message = message
         Thread.__init__(self)
         self.nlp = NLPFactory().create()
-        self.action_handler = ActionHandler()
+        self.action_handler = actions.action_handler.ActionHandler()
 
     def run(self):
         logger.info('[Processing]: ' + self.message.text)

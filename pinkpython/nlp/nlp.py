@@ -44,7 +44,7 @@ class NLPFactory:
     from nlp.api import APINLP
 
     config = ConfigParser()
-    config.read('pinkpython.conf')
+    config.read('configuration.conf')
     CLASSES = {
         'api': APINLP,
         'rasa': RasaNLP

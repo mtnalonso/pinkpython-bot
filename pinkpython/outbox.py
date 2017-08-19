@@ -2,17 +2,17 @@ from queue import Queue
 from threading import Thread
 from time import sleep
 
-import twitter_snake as twitter_connector
+import channels.twitter
 
 
 outbox_queue = Queue()
 
 
 class OutboxConsumer(Thread):
-    def __init__(self, queue=outbox_queue):
-        self.queue = queue
+    def __init__(self, outbox_queue=outbox_queue):
+        self.outbox_queue = outbox_queue
         self.running = True
-        self.twitter_connector = twitter_connector
+        self.twitter_channel = channels.twitter.twitter_channel
         Thread.__init__(self)
 
     def run(self):
@@ -27,17 +27,17 @@ class OutboxConsumer(Thread):
         sleep(1)
 
     def __read_next_message(self):
-        return self.queue.get()
+        return self.outbox_queue.get()
 
     def __send_message(self, message):
         # TODO process message according to class (twitter/telegram)
         # and send response
         print('OUTPUT')
         print(str(message))
-        # self.__send_twitter_response(message)
+        self.__send_twitter_response(message)
 
     def __send_twitter_response(self, message):
-        self.twitter_connector.send_response(message)
+        self.twitter_channel.send_response(message)
 
     def stop(self):
         self.running = False

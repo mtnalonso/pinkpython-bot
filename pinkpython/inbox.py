@@ -2,10 +2,7 @@ from queue import Queue
 from threading import Thread
 from time import sleep
 
-import tweepy
-
-from model.message import Message
-from message_processor import MessageProcessor
+import messages.message_processor
 
 
 inbox_queue = Queue()
@@ -32,28 +29,8 @@ class InboxConsumer(Thread):
 
     def process_message(self):
         message = self.queue.get()
-        processor = MessageProcessor(message)
+        processor = messages.message_processor.MessageProcessor(message)
         processor.start()
 
     def stop(self):
         self.running = False
-
-
-class TwitterListener(tweepy.StreamListener):
-    """
-    Stream twitter mentions and put each mention message in the inbox queue
-    """
-    def __init__(self, queue=inbox_queue):
-        super().__init__()
-        self.queue = queue
-
-    def on_status(self, status):
-        # logger.info('@[' + status.user.screen_name + ']:' + status.text)
-        message = Message(status.text, platform='twitter', original=status)
-        self.queue.put(message)
-
-    def on_error(self, status_code):
-        print('ERROR', status_code)
-        if status_code == 420:
-            logger.error("[420]:\tEnhance Your Calm!")
-            return False
