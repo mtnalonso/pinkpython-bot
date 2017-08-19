@@ -1,11 +1,5 @@
 from abc import ABC, abstractmethod
-import json
 from configparser import ConfigParser
-from pprint import pprint
-import requests
-import apiai
-
-from model.message import Message
 
 
 class NLPResponseError(Exception):
@@ -45,48 +39,10 @@ class NLP(ABC):
         pass
 
 
-class APINLP(NLP):
-    def __init__(self):
-        super(APINLP, self).__init__()
-        from credentials import apiai_access_token_developer
-        self.ai = apiai.ApiAI(apiai_access_token_developer)
-
-    def send_request(self, message):
-        request = self.build_request(message)
-        response = request.getresponse()
-        return json.loads(response.read().decode('utf-8'))
-
-    def get_action(self, result):
-        return result['action']
-
-    def build_request(self, message):
-        request = self.ai.text_request()
-        request.query = message
-        request.lang = self.language
-        request.session_id = self.session_id
-        return request
-
-class RasaNLP(NLP):
-    def __init__(self):
-        super(RasaNLP, self).__init__()
-        config = ConfigParser()
-        config.read('pinkpython.conf')
-        self.host = config.get('nlp', 'rasa_host')
-        self.port = config.get('nlp', 'rasa_port')
-        self.url = self.build_url()
-
-    def send_request(self, message):
-        http_response = requests.get(self.url + message)
-        return json.loads(http_response.text)
-
-    def get_action(self, result):
-        return result['metadata']['intentName']['name']
-
-    def build_url(self):
-        return str('http://' + self.host + ':' + self.port + '/parse?q=')
-
-
 class NLPFactory:
+    from nlp.rasa import RasaNLP
+    from nlp.api import APINLP
+
     config = ConfigParser()
     config.read('pinkpython.conf')
     CLASSES = {

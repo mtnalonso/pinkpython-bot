@@ -1,7 +1,7 @@
 from threading import Thread
 import logging
 
-from nlp import NLPFactory, NLPResponseError
+from nlp.nlp import NLPFactory, NLPResponseError
 from actions.action_handler import ActionHandler
 
 
