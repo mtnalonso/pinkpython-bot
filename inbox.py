@@ -7,7 +7,7 @@ import tweepy
 
 from nlp import NLPFactory, NLPResponseError
 from model.message import Message
-from twitter_snake import send_response
+from actions.action_handler import ActionHandler
 
 
 logging.basicConfig(filename='python_memories.log', filemode='w',
@@ -22,12 +22,12 @@ class MessageProcessor(Thread):
         self.message = message
         Thread.__init__(self)
         self.nlp = NLPFactory().create()
+        self.action_handler = ActionHandler()
 
     def run(self):
         logger.info('[Processing]: ' + self.message.text)
         self.execute_nlp()
-        # TODO: send message to action processing
-        send_response(self.message)
+        self.execute_action()
         return
 
     def execute_nlp(self):
@@ -35,6 +35,9 @@ class MessageProcessor(Thread):
             self.message = self.nlp.process(self.message)
         except NLPResponseError:
             raise NotImplementedError
+
+    def execute_action(self):
+        self.action_handler.process_message(self.message)
 
 
 class InboxConsumer(Thread):
@@ -76,7 +79,7 @@ class TwitterListener(tweepy.StreamListener):
     def on_status(self, status):
         logger.info('@[' + status.user.screen_name + ']:' + status.text)
         message = Message(status.text, platform='twitter', original=status)
-        inbox_queue.put(message)
+        self.queue.put(message)
 
     def on_error(self, status_code):
         print('ERROR', status_code)

@@ -7,3 +7,5 @@ __pycache__/
 *.log
 
 .idea
+
+cli_snake.py
