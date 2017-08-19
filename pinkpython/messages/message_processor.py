@@ -5,8 +5,6 @@ from nlp.nlp import NLPFactory, NLPResponseError
 import actions.action_handler
 
 
-logging.basicConfig(filename='python_memories.log', filemode='w',
-                    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -26,8 +24,8 @@ class MessageProcessor(Thread):
     def execute_nlp(self):
         try:
             self.message = self.nlp.process(self.message)
-        except NLPResponseError:
-            raise NotImplementedError
+        except NLPResponseError as error:
+            logger.error(error.message)
 
     def execute_action(self):
         self.action_handler.process_message(self.message)

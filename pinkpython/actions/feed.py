@@ -1,6 +1,9 @@
+import logging
 from random import randrange
 from actions.action import Action
 
+
+logger = logging.getLogger(__name__)
 
 responses = [
     'yum-yum',
@@ -24,3 +27,4 @@ class Feed(Action):
     def __process_params(self, params):
         self.params = params
         self.food = self.params['food'][0]
+        logger.info('[ACTION:feed]:\tFedding with ' + self.food)

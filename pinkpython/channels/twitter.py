@@ -1,10 +1,14 @@
 from configparser import ConfigParser
 import tweepy
+import logging
 
 from inbox import inbox_queue
 from messages.message import Message
 from credentials import consumer_key, consumer_secret, access_token, \
         access_token_secret
+
+
+logger = logging.getLogger(__name__)
 
 
 class TwitterChannel:
@@ -52,7 +56,8 @@ class TwitterListener(tweepy.StreamListener):
         self.inbox_queue = inbox_queue
 
     def on_status(self, status):
-        # logger.info('@[' + status.user.screen_name + ']:' + status.text)
+        username = status.user.screen_name
+        logger.info('TWITTER: @[' + username + ']: ' + status.text)
         message = Message(status.text, platform='twitter', original=status)
         self.inbox_queue.put(message)
 

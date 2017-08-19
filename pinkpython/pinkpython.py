@@ -3,6 +3,11 @@ import inbox
 import outbox
 
 
+def init_logger():
+    import logging
+    logging.basicConfig(filename='python_memories.log', filemode='w',
+                        level=logging.INFO)
+
 def start_consumers():
     inbox_consumer = inbox.InboxConsumer()
     outbox_consumer = outbox.OutboxConsumer()
@@ -15,4 +20,5 @@ def main():
 
 
 if __name__ == '__main__':
+    init_logger()
     main()
