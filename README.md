@@ -10,22 +10,27 @@ A python bot which needs to be feeded :snake:
 
 ## Installation
 
-    git clone https://github.com/mtnalonso/pinkpython-bot.git
-    cd pinkpython-bot
-    pip install -r requirements.txt
+    $ git clone https://github.com/mtnalonso/pinkpython-bot.git
+    $ cd pinkpython-bot
+    $ pip install -r requirements.txt
 
 Create a credentials.py file as follows:
 
-    CONSUMER_KEY = 'YOUR_TWITTER_CONSUMER_KEY'
-    CONSUMER_SECRET = 'YOUR_TWITTER_CONSUMER_SECRET_KEY'
-    ACCESS_TOKEN = 'YOUT_TWITTER_ACCESS_TOKEN'
-    ACCESS_TOKEN_SECRET = 'YOUT_TWITTER_ACCESS_TOKEN_SECRET'
+    CONSUMER_KEY = 'your_twitter_consumer_key'
+    CONSUMER_SECRET = 'your_twitter_consumer_secret_key'
+    ACCESS_TOKEN = 'your_twitter_access_token'
+    ACCESS_TOKEN_SECRET = 'your_twitter_access_token_secret'
 
     # only necessary if using API.ai
-    APIAI_ACCESS_TOKEN_DEVELOPER = 'YOUR_APIAI_DEV_TOKEN'
-    APIAI_ACCESS_TOKEN_CLIENT = 'YOUR_APIAI_PROD_TOKEN'
+    APIAI_ACCESS_TOKEN_DEVELOPER = 'your_apiai_dev_token'
+    APIAI_ACCESS_TOKEN_CLIENT = 'your_apiai_prod_token'
 
 ## Run
 
-    cd pinkpython
-    python3 pinkpython.py
+    $ cd pinkpython
+    $ python3 pinkpython.py
+
+## Test
+
+    $ pip install -r test_requirements.txt
+    $ pytest
