@@ -1,5 +1,5 @@
-from actions.action import Action
 from random import randrange
+from actions.action import Action
 
 
 responses = [
@@ -10,12 +10,12 @@ responses = [
 
 
 class Greeting(Action):
-    def __init__(self):
-        pass
+    def __init__(self, responses=responses):
+        self.responses = responses
 
-    def execute(self, params={}):
+    def execute(self, params=None):
         pass
 
     def get_response_message(self):
-        index = randrange(len(responses))
-        return responses[index]
+        index = randrange(len(self.responses))
+        return self.responses[index]

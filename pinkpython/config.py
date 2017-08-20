@@ -1,21 +1,25 @@
 from os.path import abspath, dirname, join
-from configparser import ConfigParser
+from configparser import ConfigParser, NoOptionError
+import logging
 
 
-project_root_path = abspath(join(dirname(__file__), '..'))
+logger = logging.getLogger(__name__)
+
+
+PROJECT_ROOT_PATH = abspath(join(dirname(__file__), '..'))
 
 
 config = ConfigParser()
-config.read(project_root_path + '/configuration.conf')
+config.read(PROJECT_ROOT_PATH + '/configuration.conf')
 
 
-twitter_username = config.get('twitter', 'username')
+TWITTER_USERNAME = config.get('twitter', 'username')
 
 
-nlp = config.get('nlp', 'nlp')
+NLP = config.get('nlp', 'nlp')
 
 try:
-    rasa_port = config.get('nlp', 'rasa_port')
-    rasa_host = config.get('nlp', 'rasa_host')
-except ConfigParser.NoOptionError:
-    pass
+    RASA_PORT = config.get('nlp', 'rasa_port')
+    RASA_HOST = config.get('nlp', 'rasa_host')
+except NoOptionError as error:
+    logger.error(str(error))

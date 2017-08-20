@@ -1,18 +1,18 @@
-import tweepy
 import logging
+import tweepy
 
 import config
 from inbox import inbox_queue
 from messages.message import Message
-from credentials import consumer_key, consumer_secret, access_token, \
-        access_token_secret
+from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, \
+        ACCESS_TOKEN_SECRET
 
 
 logger = logging.getLogger(__name__)
 
 
 class TwitterChannel:
-    def __init__(self, inbox_queue=inbox_queue):
+    def __init__(self, inbox_queue):
         self.auth = None
         self.api = None
         self.username = 'pinkpythonbot'
@@ -25,12 +25,12 @@ class TwitterChannel:
         self.__load_config()
 
     def __load_auth(self):
-        self.auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        self.auth.set_access_token(access_token, access_token_secret)
+        self.auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+        self.auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
         self.api = tweepy.API(self.auth)
 
     def __load_config(self):
-        self.username = config.twitter_username
+        self.username = config.TWITTER_USERNAME
 
     def put_tweet(self, tweet):
         self.api.update_status(status=tweet)
@@ -66,16 +66,4 @@ class TwitterListener(tweepy.StreamListener):
             return False
 
 
-twitter_channel = TwitterChannel()
-
-
-if __name__ == '__main__':
-    from inbox import InboxConsumer
-    from outbox import OutboxConsumer
-
-    twitter_channel.init_listener()
-
-    inbox_consumer = InboxConsumer()
-    outbox_consumer = OutboxConsumer()
-    inbox_consumer.start()
-    outbox_consumer.start()
+twitter_channel = TwitterChannel(inbox_queue)

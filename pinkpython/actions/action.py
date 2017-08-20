@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
+from random import randrange
 
 
 class Action(ABC):
-    def __init__(self):
+    def __init__(self, params=None, responses=None):
         self.params = {}
+        self.responses = ['']
 
-    @abstractmethod
-    def execute(self, params={}):
+    def execute(self, params=None):
         pass
 
-    @abstractmethod
     def get_response_message(self):
-        pass
+        index = randrange(len(self.responses))
+        return self.responses[index]

@@ -7,8 +7,8 @@ from nlp.nlp import NLP
 class APINLP(NLP):
     def __init__(self):
         super(APINLP, self).__init__()
-        from credentials import apiai_access_token_developer
-        self.ai = apiai.ApiAI(apiai_access_token_developer)
+        from credentials import APIAI_ACCESS_TOKEN_DEVELOPER
+        self.apiai = apiai.ApiAI(APIAI_ACCESS_TOKEN_DEVELOPER)
 
     def send_request(self, message):
         request = self.build_request(message)
@@ -19,7 +19,7 @@ class APINLP(NLP):
         return result['action']
 
     def build_request(self, message):
-        request = self.ai.text_request()
+        request = self.apiai.text_request()
         request.query = message
         request.lang = self.language
         request.session_id = self.session_id

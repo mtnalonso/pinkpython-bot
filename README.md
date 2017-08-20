@@ -16,14 +16,14 @@ A python bot which needs to be feeded :snake:
 
 Create a credentials.py file as follows:
 
-    consumer_key = 'YOUR_TWITTER_CONSUMER_KEY'
-    consumer_secret = 'YOUR_TWITTER_CONSUMER_SECRET_KEY'
-    access_token = 'YOUT_TWITTER_ACCESS_TOKEN'
-    access_token_secret = 'YOUT_TWITTER_ACCESS_TOKEN_SECRET'
+    CONSUMER_KEY = 'YOUR_TWITTER_CONSUMER_KEY'
+    CONSUMER_SECRET = 'YOUR_TWITTER_CONSUMER_SECRET_KEY'
+    ACCESS_TOKEN = 'YOUT_TWITTER_ACCESS_TOKEN'
+    ACCESS_TOKEN_SECRET = 'YOUT_TWITTER_ACCESS_TOKEN_SECRET'
 
     # only necessary if using API.ai
-    apiai_access_token_developer = 'YOUR_APIAI_DEV_TOKEN'
-    apiai_access_token_client = 'YOUR_APIAI_PROD_TOKEN'
+    APIAI_ACCESS_TOKEN_DEVELOPER = 'YOUR_APIAI_DEV_TOKEN'
+    APIAI_ACCESS_TOKEN_CLIENT = 'YOUR_APIAI_PROD_TOKEN'
 
 ## Run
 

@@ -7,15 +7,14 @@ import outbox
 
 class ActionHandler:
     def __init__(self, outbox_queue=outbox.outbox_queue):
-        self.actions = self.__load_actions()
         self.outbox_queue = outbox_queue
+        self.__load_actions()
 
     def __load_actions(self):
-        actions = {}
-        actions['feed'] = Feed()
-        actions['test'] = Dummy()
-        actions['greeting'] = Greeting()
-        return actions
+        self.actions = {}
+        self.actions['feed'] = Feed()
+        self.actions['test'] = Dummy()
+        self.actions['greeting'] = Greeting()
 
     def process_message(self, message):
         params = message.parameters

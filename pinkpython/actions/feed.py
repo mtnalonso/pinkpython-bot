@@ -13,16 +13,18 @@ responses = [
 
 
 class Feed(Action):
-    def __init__(self):
+    def __init__(self, responses=responses):
         Action.__init__(self)
+        self.responses = responses
+        self.params = None
         self.food = None
 
-    def execute(self, params={}):
+    def execute(self, params=None):
         self.__process_params(params)
 
     def get_response_message(self):
-        index = randrange(len(responses))
-        return responses[index].format(self.food)
+        index = randrange(len(self.responses))
+        return self.responses[index].format(self.food)
 
     def __process_params(self, params):
         self.params = params

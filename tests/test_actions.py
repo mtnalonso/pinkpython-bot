@@ -21,7 +21,8 @@ class TestFeedAction(unittest.TestCase):
         valid_responses = [x.format(food) for x in self.responses]
 
         self.action_handler.process_message(message)
-        while self.queue.empty(): pass;
+        while self.queue.empty():
+            pass
 
         output_message = self.queue.get()
         response = output_message.text

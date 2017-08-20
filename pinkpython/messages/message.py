@@ -1,19 +1,19 @@
 
 class Message:
-    def __init__(self, text, query=None, action='', parameters={},
+    def __init__(self, text, query=None, action='', parameters=None,
                  language='en', platform=None, original=None):
         self.text = text
         self.query = query or text
         self.action = action
-        self.parameters = parameters
+        self.parameters = parameters or {}
         self.language = language
         self.platform = platform
         self.original = original
 
     def __repr__(self):
         return ('action:\t' + str(self.action) + '\nquery:\t' +
-                str(self.query) + '\nparams:\t' + str(self.parameters)
-                + '\ntext:\t' + str(self.text))
+                str(self.query) + '\nparams:\t' + str(self.parameters) +
+                '\ntext:\t' + str(self.text))
 
     def get_tweet_reply(self):
         try:
@@ -31,4 +31,4 @@ class Message:
     def __build_tweet(self, username):
         if self.text == self.query:
             self.text = '[UNDER DEVELOP]'
-        return ('@' + username + ' ' + self.text)
+        return str('@' + username + ' ' + self.text)

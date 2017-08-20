@@ -7,8 +7,8 @@ import config
 class RasaNLP(NLP):
     def __init__(self):
         super(RasaNLP, self).__init__()
-        self.host = config.rasa_host
-        self.port = config.rasa_port
+        self.host = config.RASA_HOST
+        self.port = config.RASA_PORT
         self.url = self.build_url()
 
     def send_request(self, message):

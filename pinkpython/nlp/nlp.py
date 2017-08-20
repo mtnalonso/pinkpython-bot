@@ -7,6 +7,11 @@ class NLPResponseError(Exception):
         Exception.__init__(message)
 
 
+def validate_response(self, response):
+    if response['status']['code'] != 200:
+        raise NLPResponseError('status code ' + response['status']['code'])
+
+
 class NLP(ABC):
     def __init__(self, language='en', session_id='pink'):
         self.language = language
@@ -14,7 +19,7 @@ class NLP(ABC):
 
     def process(self, message):
         response = self.send_request(message.text)
-        self.validate_response(response)
+        validate_response(response)
         message = self.add_nlp_data(response, message)
         return message
 
@@ -24,11 +29,6 @@ class NLP(ABC):
         message.parameters = result['parameters']
         message.query = result['resolvedQuery']
         return message
-
-    def validate_response(self, response):
-        if response['status']['code'] != 200:
-            raise NLPResponseError('status code ' +
-                                   response['status']['code'])
 
     @abstractmethod
     def send_request(self, message):
@@ -50,6 +50,6 @@ class NLPFactory:
 
     @staticmethod
     def create():
-        nlp_label = config.nlp
+        nlp_label = config.NLP
         nlp = NLPFactory.CLASSES.get(nlp_label)
         return nlp()
