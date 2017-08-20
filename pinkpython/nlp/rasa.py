@@ -1,15 +1,14 @@
 import json
 import requests
 from nlp.nlp import NLP
+import config
 
 
 class RasaNLP(NLP):
     def __init__(self):
         super(RasaNLP, self).__init__()
-        config = ConfigParser()
-        config.read('configuration.conf')
-        self.host = config.get('nlp', 'rasa_host')
-        self.port = config.get('nlp', 'rasa_port')
+        self.host = config.rasa_host
+        self.port = config.rasa_port
         self.url = self.build_url()
 
     def send_request(self, message):

@@ -1,7 +1,7 @@
 from actions.action import Action
 
 
-class Test(Action):
+class Dummy(Action):
     def __init__(self):
         pass
 

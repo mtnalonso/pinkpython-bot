@@ -2,6 +2,8 @@ pinkpython/credentials.py
 
 rasa_nlu/
 __pycache__/
+.cache/
+.coverage
 *.pyc
 
 *.log

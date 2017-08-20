@@ -1,7 +1,7 @@
-from configparser import ConfigParser
 import tweepy
 import logging
 
+import config
 from inbox import inbox_queue
 from messages.message import Message
 from credentials import consumer_key, consumer_secret, access_token, \
@@ -30,15 +30,14 @@ class TwitterChannel:
         self.api = tweepy.API(self.auth)
 
     def __load_config(self):
-        config = ConfigParser()
-        config.read('configuration.conf')
-        self.username = config.get('twitter', 'username')
+        self.username = config.twitter_username
 
     def put_tweet(self, tweet):
         self.api.update_status(status=tweet)
 
     def send_response(self, message):
         reply_id, tweet = message.get_tweet_reply()
+        logger.info('TWITTER: -> ' + tweet)
         self.api.update_status(tweet, reply_id)
 
     def init_listener(self):
@@ -62,7 +61,6 @@ class TwitterListener(tweepy.StreamListener):
         self.inbox_queue.put(message)
 
     def on_error(self, status_code):
-        print('ERROR', status_code)
         if status_code == 420:
             logger.error("[420]:\tEnhance Your Calm!")
             return False

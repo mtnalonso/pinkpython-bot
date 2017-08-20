@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from configparser import ConfigParser
+import config
 
 
 class NLPResponseError(Exception):
@@ -43,8 +43,6 @@ class NLPFactory:
     from nlp.rasa import RasaNLP
     from nlp.api import APINLP
 
-    config = ConfigParser()
-    config.read('configuration.conf')
     CLASSES = {
         'api': APINLP,
         'rasa': RasaNLP
@@ -52,6 +50,6 @@ class NLPFactory:
 
     @staticmethod
     def create():
-        nlp_label = NLPFactory.config.get('nlp', 'nlp')
+        nlp_label = config.nlp
         nlp = NLPFactory.CLASSES.get(nlp_label)
         return nlp()

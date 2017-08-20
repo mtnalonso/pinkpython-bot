@@ -1,5 +1,5 @@
 from actions.feed import Feed
-from actions.action_test import Test
+from actions.dummy import Dummy
 from actions.error import Error
 from actions.greeting import Greeting
 import outbox
@@ -13,7 +13,7 @@ class ActionHandler:
     def __load_actions(self):
         actions = {}
         actions['feed'] = Feed()
-        actions['test'] = Test()
+        actions['test'] = Dummy()
         actions['greeting'] = Greeting()
         return actions
 
