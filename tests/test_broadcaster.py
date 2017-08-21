@@ -19,7 +19,7 @@ class TestBroadcaster(unittest.TestCase):
         assert TWITTER in self.broadcaster.channels
         assert channel is self.broadcaster.channels[TWITTER]
 
-    def  test_add_duplicate_channel_label(self):
+    def test_add_duplicate_channel_label(self):
         channel_one = self.factory.create(TWITTER, self.inbox_queue)
         channel_two = self.factory.create(TWITTER, self.inbox_queue)
 

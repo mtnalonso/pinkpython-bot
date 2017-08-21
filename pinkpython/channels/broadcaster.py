@@ -22,7 +22,7 @@ class Broadcaster:
 
     def add_channel(self, channel_name, channel_instance):
         self.__add_channel_if_not_exists(channel_name, channel_instance)
-        logger.info('Added channel ' + channel_name)
+        logger.debug('Added channel ' + channel_name)
 
     def __add_channel_if_not_exists(self, channel_name, channel_instance):
         self.__validate_channel_name(channel_name)

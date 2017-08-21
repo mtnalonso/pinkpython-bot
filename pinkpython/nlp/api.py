@@ -1,6 +1,5 @@
 import json
 import apiai
-import requests
 from nlp.nlp import NLP
 
 
