@@ -8,4 +8,3 @@ class Dummy(Action):
 
     def execute(self, params=None):
         pass
-

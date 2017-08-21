@@ -3,7 +3,7 @@ from threading import Thread
 from time import sleep
 import logging
 
-import channels.twitter
+import channels.twitter_channel
 
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ class OutboxConsumer(Thread):
     def __init__(self, outbox_queue=outbox_queue):
         self.outbox_queue = outbox_queue
         self.running = True
-        self.twitter_channel = channels.twitter.twitter_channel
+        self.twitter_channel = channels.twitter_channel.twitter_channel
         Thread.__init__(self)
 
     def run(self):
