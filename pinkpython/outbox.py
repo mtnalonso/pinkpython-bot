@@ -3,22 +3,15 @@ from threading import Thread
 from time import sleep
 import logging
 
-from channels.channel import ChannelSingletonFactory
-
 
 logger = logging.getLogger(__name__)
 
 
-outbox_queue = Queue()
-
-
 class OutboxConsumer(Thread):
-    def __init__(self, outbox_queue=outbox_queue):
+    def __init__(self, outbox_queue, broadcaster):
         self.outbox_queue = outbox_queue
         self.running = True
-        self.twitter_channel = ChannelSingletonFactory.get_instance(
-            'twitter', None
-        )
+        self.broadcaster = broadcaster
         Thread.__init__(self)
 
     def run(self):
@@ -36,13 +29,8 @@ class OutboxConsumer(Thread):
         return self.outbox_queue.get()
 
     def __send_message(self, message):
-        # TODO process message according to class (twitter/telegram)
-        # and send response
         logger.info('[Outbox]: ' + str(message))
-        self.__send_twitter_response(message)
-
-    def __send_twitter_response(self, message):
-        self.twitter_channel.send_response(message)
+        self.broadcaster.send_message(message)
 
     def stop(self):
         self.running = False

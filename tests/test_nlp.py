@@ -18,6 +18,10 @@ class TestNLPFactory(unittest.TestCase):
         rasa_instance = self.factory.create('rasa')
         assert isinstance(rasa_instance, RasaNLP)
 
+    def test_create_invalid_instance(self):
+        with pytest.raises(TypeError):
+            instance = self.factory.create('apa')
+
 
 class TestNLPResponses(unittest.TestCase):
     def setUp(self):

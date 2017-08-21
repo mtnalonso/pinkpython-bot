@@ -2,19 +2,17 @@ from queue import Queue
 from threading import Thread
 from time import sleep
 
-import messages.message_processor
-
-
-inbox_queue = Queue()
+from messages.message_processor import MessageProcessor
 
 
 class InboxConsumer(Thread):
     """
     Get tweets from the inbox queue and process each one in a new thread
     """
-    def __init__(self, queue=inbox_queue):
-        self.queue = queue
+    def __init__(self, inbox_queue, outbox_queue):
+        self.inbox_queue = inbox_queue
         self.running = True
+        self.outbox_queue = outbox_queue
         Thread.__init__(self)
 
     def run(self):
@@ -23,13 +21,13 @@ class InboxConsumer(Thread):
         return
 
     def process_next_message(self):
-        if not self.queue.empty():
+        if not self.inbox_queue.empty():
             self.process_message()
         sleep(1)
 
     def process_message(self):
-        message = self.queue.get()
-        processor = messages.message_processor.MessageProcessor(message)
+        message = self.inbox_queue.get()
+        processor = MessageProcessor(message, self.outbox_queue)
         processor.start()
 
     def stop(self):

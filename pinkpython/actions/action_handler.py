@@ -2,11 +2,10 @@ from actions.feed import Feed
 from actions.dummy import Dummy
 from actions.error import Error
 from actions.greeting import Greeting
-import outbox
 
 
 class ActionHandler:
-    def __init__(self, outbox_queue=outbox.outbox_queue):
+    def __init__(self, outbox_queue):
         self.outbox_queue = outbox_queue
         self.__load_actions()
 

@@ -11,6 +11,9 @@ class Channel(ABC):
     def send_message(self):
         pass
 
+    @abstractmethod
+    def init_listener(self):
+        pass
 
 class ChannelSingletonFactory:
     from channels.twitter_channel import TwitterChannel

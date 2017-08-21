@@ -1,14 +1,10 @@
 import argparse
+from queue import Queue
 
 from channels.channel import ChannelSingletonFactory
-from inbox import InboxConsumer, inbox_queue
+from channels.broadcaster import Broadcaster
+from inbox import InboxConsumer
 from outbox import OutboxConsumer
-
-
-def load_args():
-    parser = argparse.ArgumentParser(prog='pinkpython.py')
-    parser.add_argument('-c', '--channel', help='Start only given channel')
-    return parser.parse_args()
 
 
 def init_logger():
@@ -17,35 +13,44 @@ def init_logger():
                         level=logging.INFO)
 
 
-def start_channel(channel):
-    if channel == 'twitter':
-        start_twitter()
+def load_args():
+    parser = argparse.ArgumentParser(prog='pinkpython.py')
+    parser.add_argument('-c', '--channel', help='Start only given channel')
+    return parser.parse_args()
 
 
-def start_twitter():
-    twitter_channel = ChannelSingletonFactory.get_instance(
-        'twitter', inbox_queue
-    )
-    twitter_channel.init_listener()
-    start_consumers()
+def main(channel):
+    inbox_queue = Queue()
+    outbox_queue = Queue()
+    broadcaster = Broadcaster()
+
+    if channel:
+        start_channel(channel, inbox_queue, broadcaster)
+    else:
+        start_all(inbox_queue, broadcaster)
+    start_consumers(inbox_queue, outbox_queue, broadcaster)
 
 
-def start_consumers():
-    inbox_consumer = InboxConsumer()
-    outbox_consumer = OutboxConsumer()
+def start_all(inbox_queue, broadcaster):
+    start_channel('telegram', inbox_queue, broadcaster)
+    start_channel('twitter', inbox_queue, broadcaster)
+
+
+def start_channel(channel_name, inbox_queue, broadcaster):
+    channel = ChannelSingletonFactory.get_instance(channel, inbox_queue)
+    broadcaster.add_channel(channel_name, channel)
+    channel.init_listener()
+
+
+def start_consumers(inbox_queue, outbox_queue, broadcaster):
+    inbox_consumer = InboxConsumer(inbox_queue, outbox_queue)
+    outbox_consumer = OutboxConsumer(outbox_queue, broadcaster)
     inbox_consumer.start()
     outbox_consumer.start()
-
-
-def main():
-    start_twitter()
 
 
 if __name__ == '__main__':
     init_logger()
 
     args = load_args()
-    if args.channel:
-        start_channel(args.channel)
-    else:
-        main()
+    main(args.channel)
