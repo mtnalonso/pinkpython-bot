@@ -21,6 +21,8 @@ Create a credentials.py file as follows:
     ACCESS_TOKEN = 'your_twitter_access_token'
     ACCESS_TOKEN_SECRET = 'your_twitter_access_token_secret'
 
+    TELEGRAM_TOKEN = 'your_telegram_bot_token'
+
     # only necessary if using API.ai
     APIAI_ACCESS_TOKEN_DEVELOPER = 'your_apiai_dev_token'
     APIAI_ACCESS_TOKEN_CLIENT = 'your_apiai_prod_token'
@@ -29,6 +31,11 @@ Create a credentials.py file as follows:
 
     $ cd pinkpython
     $ python3 pinkpython.py
+
+To use only over a specific channel use the option -c or --channel
+
+    $ python3 pinkpython.py -c telegram
+
 
 ## Test
 
