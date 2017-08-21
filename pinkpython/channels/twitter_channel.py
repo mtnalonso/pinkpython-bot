@@ -2,10 +2,10 @@ import logging
 import tweepy
 
 import config
-from messages.message import Message
+from messages.twitter_message import TwitterMessage
+from channels.channel import Channel
 from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, \
         ACCESS_TOKEN_SECRET
-from channels.channel import Channel
 
 
 logger = logging.getLogger(__name__)
@@ -35,9 +35,9 @@ class TwitterChannel(Channel):
     def send_message(self, tweet):
         self.api.update_status(status=tweet)
 
-    def send_response(self, message):
-        reply_id, tweet = message.get_tweet_reply()
-        logger.info('TWITTER: -> ' + tweet)
+    def send_reply(self, message):
+        reply_id, tweet = message.get_reply()
+        logger.info(' -> ' + tweet)
         self.api.update_status(tweet, reply_id)
 
     def init_listener(self):
@@ -56,8 +56,8 @@ class TwitterListener(tweepy.StreamListener):
 
     def on_status(self, status):
         username = status.user.screen_name
-        logger.info('TWITTER: @[' + username + ']: ' + status.text)
-        message = Message(status.text, platform='twitter', original=status)
+        logger.info(' @[' + username + ']: ' + status.text)
+        message = TwitterMessage(status.text, original=status)
         self.inbox_queue.put(message)
 
     def on_error(self, status_code):

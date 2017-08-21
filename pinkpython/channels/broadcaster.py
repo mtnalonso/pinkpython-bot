@@ -1,3 +1,7 @@
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class Broadcaster:
@@ -5,8 +9,9 @@ class Broadcaster:
         self.channels = {}
 
     def send_message(self, message):
-        # TODO: select channel type according to message and send it
-        print(message)
+        logging.info('Redirecting to: ' + message.channel)
+        self.channels[message.channel].send_reply(message)
 
     def add_channel(self, channel_name, channel_instance):
         self.channels[channel_name] = channel_instance
+        logger.info('Added channel ' + channel_name)

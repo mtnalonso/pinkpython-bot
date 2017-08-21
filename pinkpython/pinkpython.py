@@ -1,7 +1,7 @@
 import argparse
 from queue import Queue
 
-from channels.channel import ChannelSingletonFactory
+from channels.channel import ChannelFactory, TWITTER, TELEGRAM
 from channels.broadcaster import Broadcaster
 from inbox import InboxConsumer
 from outbox import OutboxConsumer
@@ -32,12 +32,12 @@ def main(channel):
 
 
 def start_all(inbox_queue, broadcaster):
-    start_channel('telegram', inbox_queue, broadcaster)
-    start_channel('twitter', inbox_queue, broadcaster)
+    start_channel(TELEGRAM, inbox_queue, broadcaster)
+    start_channel(TWITTER, inbox_queue, broadcaster)
 
 
 def start_channel(channel_name, inbox_queue, broadcaster):
-    channel = ChannelSingletonFactory.get_instance(channel, inbox_queue)
+    channel = ChannelFactory.create(channel_name, inbox_queue)
     broadcaster.add_channel(channel_name, channel)
     channel.init_listener()
 

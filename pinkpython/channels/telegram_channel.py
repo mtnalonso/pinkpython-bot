@@ -15,5 +15,8 @@ class TelegramChannel(Channel):
     def send_message(self, message):
         print(message)
 
+    def send_reply(self, message):
+        print(message)
+
     def init_listener(self):
-        print('listening...')
+        logger.debug('Start listening...')

@@ -29,7 +29,7 @@ class OutboxConsumer(Thread):
         return self.outbox_queue.get()
 
     def __send_message(self, message):
-        logger.info('[Outbox]: ' + str(message))
+        logger.info('[Outbox]:\n\n' + str(message) + '\n')
         self.broadcaster.send_message(message)
 
     def stop(self):
