@@ -23,6 +23,7 @@ class Channel(ABC):
     def init_listener(self):
         pass
 
+
 class ChannelFactory:
     from channels.twitter_channel import TwitterChannel
     from channels.telegram_channel import TelegramChannel
