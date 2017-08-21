@@ -13,4 +13,4 @@ class TwitterMessage(Message):
         return self.reply_id, self.__build_tweet()
 
     def __build_tweet(self):
-        return str('@' + self.username + ' ' + self.text)
+        return '@{0} {1}'.format(self.username, self.text)
