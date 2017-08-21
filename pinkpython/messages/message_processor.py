@@ -12,7 +12,7 @@ class MessageProcessor(Thread):
     def __init__(self, message):
         self.message = message
         Thread.__init__(self)
-        self.nlp = NLPFactory().create()
+        self.nlp = NLPFactory.create()
         self.action_handler = actions.action_handler.ActionHandler()
 
     def run(self):

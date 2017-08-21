@@ -23,7 +23,7 @@ def start_channel(channel):
 
 
 def start_twitter():
-    twitter_channel = ChannelSingletonFactory().get_instance(
+    twitter_channel = ChannelSingletonFactory.get_instance(
         'twitter', inbox_queue
     )
     twitter_channel.init_listener()

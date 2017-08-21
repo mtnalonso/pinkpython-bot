@@ -8,7 +8,7 @@ from nlp.rasa import RasaNLP
 
 class TestNLPFactory(unittest.TestCase):
     def setUp(self):
-        self.factory = NLPFactory()
+        self.factory = NLPFactory
 
     def test_create_APIAI_instance(self):
         api_instance = self.factory.create('api')

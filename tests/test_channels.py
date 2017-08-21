@@ -9,7 +9,7 @@ from channels.telegram_channel import TelegramChannel
 
 class TestChannelSingletonFactory(unittest.TestCase):
     def setUp(self):
-        self.factory = ChannelSingletonFactory()
+        self.factory = ChannelSingletonFactory
         self.inbox_queue = Queue()
 
     def test_create_telegram_channel(self):

@@ -13,7 +13,7 @@ foods = [
 
 class TestIntentFeed(unittest.TestCase):
     def setUp(self):
-        self.nlp = NLPFactory().create()
+        self.nlp = NLPFactory.create()
         self.expected_action = 'feed'
         self.food = None
 

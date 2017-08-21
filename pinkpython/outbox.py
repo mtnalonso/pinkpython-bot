@@ -16,7 +16,7 @@ class OutboxConsumer(Thread):
     def __init__(self, outbox_queue=outbox_queue):
         self.outbox_queue = outbox_queue
         self.running = True
-        self.twitter_channel = ChannelSingletonFactory().get_instance(
+        self.twitter_channel = ChannelSingletonFactory.get_instance(
             'twitter', None
         )
         Thread.__init__(self)
