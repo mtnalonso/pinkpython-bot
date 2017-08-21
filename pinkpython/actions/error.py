@@ -18,3 +18,4 @@ class Error(Action):
     def get_response_message(self):
         index = randrange(len(self.responses))
         return self.responses[index]
+

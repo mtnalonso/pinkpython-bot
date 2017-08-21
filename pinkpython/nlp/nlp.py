@@ -4,12 +4,16 @@ import config
 
 class NLPResponseError(Exception):
     def __init__(self, message):
-        Exception.__init__(message)
+        self.message = message
+
+    def __str__(self):
+        return self.message
 
 
-def validate_response(self, response):
-    if response['status']['code'] != 200:
-        raise NLPResponseError('status code ' + response['status']['code'])
+def validate_response(response):
+    status_code = int(response['status']['code'])
+    if status_code != 200:
+        raise NLPResponseError('status code ' + str(status_code))
 
 
 class NLP(ABC):
@@ -49,7 +53,7 @@ class NLPFactory:
     }
 
     @staticmethod
-    def create():
-        nlp_label = config.NLP
+    def create(nlp_api=None):
+        nlp_label = nlp_api or config.NLP
         nlp = NLPFactory.CLASSES.get(nlp_label)
         return nlp()
