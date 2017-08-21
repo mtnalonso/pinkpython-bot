@@ -23,6 +23,7 @@ class TestIntentFeed(unittest.TestCase):
         message = Message('Here\'s a {0} for u'.format(self.food))
         return message
 
+    @unittest.skip('Depends on AI data')
     def test_feed_intent_valid(self):
         message = self.create_message()
 
