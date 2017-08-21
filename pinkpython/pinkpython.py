@@ -1,8 +1,8 @@
 import argparse
 
-from channels.twitter_channel import twitter_channel
-import inbox
-import outbox
+from channels.channel import ChannelSingletonFactory
+from inbox import InboxConsumer, inbox_queue
+from outbox import OutboxConsumer
 
 
 def load_args():
@@ -23,13 +23,16 @@ def start_channel(channel):
 
 
 def start_twitter():
+    twitter_channel = ChannelSingletonFactory().get_instance(
+        'twitter', inbox_queue
+    )
     twitter_channel.init_listener()
     start_consumers()
 
 
 def start_consumers():
-    inbox_consumer = inbox.InboxConsumer()
-    outbox_consumer = outbox.OutboxConsumer()
+    inbox_consumer = InboxConsumer()
+    outbox_consumer = OutboxConsumer()
     inbox_consumer.start()
     outbox_consumer.start()
 

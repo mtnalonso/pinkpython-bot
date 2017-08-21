@@ -2,22 +2,22 @@ import logging
 import tweepy
 
 import config
-from inbox import inbox_queue
 from messages.message import Message
 from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, \
         ACCESS_TOKEN_SECRET
+from channels.channel import Channel
 
 
 logger = logging.getLogger(__name__)
 
 
-class TwitterChannel:
+class TwitterChannel(Channel):
     def __init__(self, inbox_queue):
+        Channel.__init__(self, inbox_queue)
         self.auth = None
         self.api = None
         self.username = 'pinkpythonbot'
 
-        self.inbox_queue = inbox_queue
         self.listener = None
         self.stream = None
 
@@ -32,7 +32,7 @@ class TwitterChannel:
     def __load_config(self):
         self.username = config.TWITTER_USERNAME
 
-    def put_tweet(self, tweet):
+    def send_message(self, tweet):
         self.api.update_status(status=tweet)
 
     def send_response(self, message):
@@ -64,6 +64,3 @@ class TwitterListener(tweepy.StreamListener):
         if status_code == 420:
             logger.error("[420]:\tEnhance Your Calm!")
             return False
-
-
-twitter_channel = TwitterChannel(inbox_queue)
