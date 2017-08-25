@@ -4,6 +4,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from credentials import TELEGRAM_TOKEN
 from channels.channel import Channel
+from channels.telegram_commands import get_documentation, run_command
 from messages.telegram_message import TelegramMessage
 
 
@@ -22,6 +23,8 @@ class TelegramChannel(Channel, Updater):
         self.__add_mention_receiver()
         self.__add_command('start', self.__start)
         self.__add_command('hello', self.__hello)
+        self.__add_command('doc', self.__doc)
+        self.__add_command('run', self.__run)
 
     def __add_command(self, label, function):
         command_handler = CommandHandler(label, function)
@@ -32,12 +35,27 @@ class TelegramChannel(Channel, Updater):
         self.dispatcher.add_handler(message_handler)
 
     def __start(self, bot, update):
+        logger.info('[start]: {}'.format(update))
         chat_id = update.message.chat_id
         bot.send_message(chat_id, 'FEED ME')
 
     def __hello(self, bot, update):
+        logger.info('[hello]: {}'.format(update))
         username = self.__get_username_tag(update)
         update.message.reply_text('{} I\'M GONNA EAT U'.format(username))
+
+    def __doc(self, bot, update):
+        doc_query = self.__get_message_command('doc', update)
+        documentation = get_documentation(doc_query)
+        update.message.reply_text(documentation)
+
+    def __run(self, bot, update):
+        command = self.__get_message_command('run', update)
+        command_output = run_command(command)
+        update.message.reply_text(command_output)
+
+    def __get_message_command(self, command, update):
+        return update.message.text.replace('/' + command, '').split()[0]
 
     def __get_username_tag(self, update):
         username = update.message.from_user.username
