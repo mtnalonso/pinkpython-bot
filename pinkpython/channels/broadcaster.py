@@ -39,3 +39,14 @@ class Broadcaster:
             if instance is channel_instance:
                 raise DuplicateChannelError(name)
         return
+
+    def stop_channels(self):
+        for name, channel in self.channels.items():
+            self.__stop_channel_if_active(channel)
+        return
+
+    def __stop_channel_if_active(self, channel):
+        if channel.active:
+            channel.stop_listener()
+            print('stoped', channel)
+        return

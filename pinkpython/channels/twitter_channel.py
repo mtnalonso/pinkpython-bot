@@ -32,7 +32,7 @@ class TwitterChannel(Channel):
     def __load_config(self):
         self.username = config.TWITTER_USERNAME
 
-    def send_message(self, tweet):
+    def publish_tweet(self, tweet):
         self.api.update_status(status=tweet)
 
     def send_reply(self, message):
@@ -44,6 +44,11 @@ class TwitterChannel(Channel):
         self.listener = TwitterListener(self.inbox_queue)
         self.stream = tweepy.Stream(auth=self.auth, listener=self.listener)
         self.stream.filter(track=[self.username], async=True)
+        self.active = True
+
+    def stop_listener(self):
+        self.listener.stop()
+        self.active = False
 
 
 class TwitterListener(tweepy.StreamListener):
@@ -55,6 +60,13 @@ class TwitterListener(tweepy.StreamListener):
         self.inbox_queue = inbox_queue
 
     def on_status(self, status):
+        if self.running:
+            self.__get_tweet_from_status(status)
+            return True
+        else:
+            return False
+
+    def __get_tweet_from_status(self, status):
         username = status.user.screen_name
         logger.info(' @[' + username + ']: ' + status.text)
         message = TwitterMessage(status.text, original=status)
@@ -64,3 +76,6 @@ class TwitterListener(tweepy.StreamListener):
         if status_code == 420:
             logger.error("[420]:\tEnhance Your Calm!")
             return False
+
+    def stop(self):
+        self.running = False

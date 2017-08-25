@@ -10,10 +10,7 @@ class Channel(ABC):
         if inbox_queue is None:
             raise TypeError('inbox_queue cannot be None')
         self.inbox_queue = inbox_queue
-
-    @abstractmethod
-    def send_message(self):
-        pass
+        self.active = False
 
     @abstractmethod
     def send_reply(self):
@@ -21,6 +18,10 @@ class Channel(ABC):
 
     @abstractmethod
     def init_listener(self):
+        pass
+
+    @abstractmethod
+    def stop_listener(self):
         pass
 
 

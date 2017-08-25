@@ -53,10 +53,6 @@ class TelegramChannel(Channel, Updater):
             return True
         return False
 
-    def send_message(self, message):
-        logger.error('Message sending is not implemented yet')
-        raise NotImplementedError
-
     def send_reply(self, message):
         original = message.original
         original.reply_text(message.get_reply())
@@ -64,3 +60,8 @@ class TelegramChannel(Channel, Updater):
     def init_listener(self):
         logger.debug('Start polling.')
         self.start_polling()
+        self.active = True
+
+    def stop_listener(self):
+        self.stop()
+        self.active = False

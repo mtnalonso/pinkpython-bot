@@ -3,7 +3,7 @@ import pytest
 from queue import Queue
 
 from channels.broadcaster import Broadcaster, DuplicateChannelError
-from channels.channel import ChannelFactory, TWITTER
+from channels.channel import ChannelFactory, TWITTER, TELEGRAM
 
 
 class TestBroadcaster(unittest.TestCase):
@@ -35,3 +35,19 @@ class TestBroadcaster(unittest.TestCase):
 
         with pytest.raises(DuplicateChannelError):
             self.broadcaster.add_channel(TWITTER, channel)
+
+    @unittest.skip('Checkout threads')
+    def test_stop_channels(self):
+        channel_one = self.__start_channel(TELEGRAM)
+        channel_two = self.__start_channel(TWITTER)
+
+        self.broadcaster.stop_channels()
+
+        assert channel_one.active is False
+        assert channel_two.active is False
+
+    def __start_channel(self, channel_name):
+        channel = self.factory.create(channel_name, self.inbox_queue)
+        self.broadcaster.add_channel(channel_name, channel)
+        channel.init_listener()
+        return channel
