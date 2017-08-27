@@ -55,7 +55,9 @@ class TelegramChannel(Channel, Updater):
         update.message.reply_text(command_output)
 
     def __get_message_command(self, command, update):
-        return update.message.text.replace('/' + command, '').split()[0]
+        message = update.message.text.replace('/' + command, '').split()
+        message = ' '.join(message)
+        return message
 
     def __get_username_tag(self, update):
         username = update.message.from_user.username
