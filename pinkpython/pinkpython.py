@@ -32,6 +32,7 @@ def main(channel):
 
 
 def start_all(inbox_queue, broadcaster):
+    ''' Shell channel omitted here '''
     start_channel(TELEGRAM, inbox_queue, broadcaster)
     start_channel(TWITTER, inbox_queue, broadcaster)
 

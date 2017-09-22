@@ -29,11 +29,17 @@ Create a credentials.py file as follows:
 
 ## Run
 
+#### Server Mode
+
     $ cd pinkpython
-    $ python3 pinkpython.py
+    $ python3 pinkpython.py &
+
+#### Single Channel Mode
 
 To use only over a specific channel use the option -c or --channel
+*Shell* channel is **recommended** for test/first run as no credentials are required (if using Rasa).
 
+    $ cd pinkpython
     $ python3 pinkpython.py -c telegram
 
 

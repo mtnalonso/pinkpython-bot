@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 TWITTER = 'twitter'
 TELEGRAM = 'telegram'
+SHELL = 'shell'
 
 
 class Channel(ABC):
@@ -28,10 +29,12 @@ class Channel(ABC):
 class ChannelFactory:
     from channels.twitter_channel import TwitterChannel
     from channels.telegram_channel import TelegramChannel
+    from channels.shell_channel import ShellChannel
 
     CHANNELS = {
         TWITTER: TwitterChannel,
-        TELEGRAM: TelegramChannel
+        TELEGRAM: TelegramChannel,
+        SHELL: ShellChannel,
     }
 
     @staticmethod
