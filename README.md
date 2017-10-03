@@ -14,6 +14,10 @@ A python bot which needs to be feeded :snake:
     $ cd pinkpython-bot
     $ pip install -r requirements.txt
 
+To use rasa_nlu as NLP run:
+
+    $ sh setup.sh
+
 Create a credentials.py file as follows:
 
     CONSUMER_KEY = 'your_twitter_consumer_key'
