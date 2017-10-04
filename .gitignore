@@ -11,4 +11,6 @@ __pycache__/
 
 .idea
 
+.venv/
+
 cli_snake.py

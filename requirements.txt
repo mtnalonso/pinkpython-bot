@@ -2,3 +2,4 @@ tweepy
 python-telegram-bot
 apiai
 requests
+virtualenv
