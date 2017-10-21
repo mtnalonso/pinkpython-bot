@@ -1,7 +1,5 @@
-from actions.feed import Feed
-from actions.dummy import Dummy
-from actions.error import Error
-from actions.greeting import Greeting
+import sys
+import inspect
 
 
 class ActionHandler:
@@ -11,9 +9,13 @@ class ActionHandler:
 
     def __load_actions(self):
         self.actions = {}
-        self.actions['feed'] = Feed()
-        self.actions['test'] = Dummy()
-        self.actions['greeting'] = Greeting()
+        for name, action in self.__find_actions():
+            self.actions[name] = action()
+
+    def __find_actions(self):
+        for name, obj in inspect.getmembers(sys.modules[__name__]):
+            if inspect.isclass(obj) and __name__ != obj.__module__:
+                yield name.lower(), obj
 
     def process_message(self, message):
         params = message.parameters
@@ -35,7 +37,7 @@ class ActionHandler:
         return action
 
     def __get_error_action(self):
-        return Error()
+        return self.actions.get('error')
 
     def __send_message(self, message):
         self.outbox_queue.put(message)
