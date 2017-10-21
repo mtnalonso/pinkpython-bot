@@ -9,6 +9,7 @@ __pycache__/
 *.log
 *.swp
 
-.idea
+*.idea
+*.DS_Store
 
 cli_snake.py
