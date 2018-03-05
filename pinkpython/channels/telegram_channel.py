@@ -24,7 +24,6 @@ class TelegramChannel(Channel, Updater):
         self.__add_command('start', self.__start)
         self.__add_command('hello', self.__hello)
         self.__add_command('doc', self.__doc)
-        self.__add_command('run', self.__run)
 
     def __add_command(self, label, function):
         command_handler = CommandHandler(label, function)
