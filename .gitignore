@@ -5,6 +5,7 @@ __pycache__/
 .cache/
 .coverage
 *.pyc
+.pytest_cache/
 
 *.log
 *.swp
