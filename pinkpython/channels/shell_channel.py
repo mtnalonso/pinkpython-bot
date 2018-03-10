@@ -13,7 +13,7 @@ class ShellChannel(Channel):
         self.inbox_queue = inbox_queue
 
     def send_reply(self, message):
-        print(f'\n-> {message.text}\n')
+        print('\n-> {}\n'.format(message.text))
         self.__request_new_message()
 
     def init_listener(self):
