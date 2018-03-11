@@ -1,16 +1,25 @@
 import sys
 import inspect
 
+from actions.feed import Feed
+from actions.greeting import Greeting
+from actions.error import Error
+from actions.dummy import Dummy
+
 
 class ActionHandler:
     def __init__(self, outbox_queue):
         self.outbox_queue = outbox_queue
+        self.actions = {}
         self.__load_actions()
 
     def __load_actions(self):
-        self.actions = {}
-        for name, action in self.__find_actions():
-            self.actions[name] = action()
+        self.actions['dummy'] = Dummy()
+        self.actions['error'] = Error()
+        self.actions['feed'] = Feed()
+        self.actions['greeting'] = Greeting()
+        #for name, action in self.__find_actions():
+        #    self.actions[name] = action()
 
     def __find_actions(self):
         for name, obj in inspect.getmembers(sys.modules[__name__]):
