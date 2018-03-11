@@ -3,6 +3,8 @@ from threading import Thread
 from time import sleep
 
 from messages.message_processor import MessageProcessor
+from nlp.nlp import NLPFactory
+from actions.action_handler import ActionHandler
 
 
 class InboxConsumer(Thread):
@@ -13,6 +15,8 @@ class InboxConsumer(Thread):
         self.inbox_queue = inbox_queue
         self.running = True
         self.outbox_queue = outbox_queue
+        self.nlp = NLPFactory.create()
+        self.action_handler = ActionHandler(self.outbox_queue)
         Thread.__init__(self)
 
     def run(self):
@@ -27,7 +31,7 @@ class InboxConsumer(Thread):
 
     def process_message(self):
         message = self.inbox_queue.get()
-        processor = MessageProcessor(message, self.outbox_queue)
+        processor = MessageProcessor(message, self.nlp, self.action_handler)
         processor.start()
 
     def stop(self):

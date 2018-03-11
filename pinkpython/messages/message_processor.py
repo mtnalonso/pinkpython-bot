@@ -1,19 +1,18 @@
 from threading import Thread
 import logging
 
-from nlp.nlp import NLPFactory, NLPResponseError
-from actions.action_handler import ActionHandler
+from nlp.nlp import NLPResponseError
 
 
 logger = logging.getLogger(__name__)
 
 
 class MessageProcessor(Thread):
-    def __init__(self, message, outbox_queue):
+    def __init__(self, message, nlp, action_handler):
         self.message = message
+        self.nlp = nlp
+        self.action_handler = action_handler
         Thread.__init__(self)
-        self.nlp = NLPFactory.create()
-        self.action_handler = ActionHandler(outbox_queue)
 
     def run(self):
         logger.info('[Processing]: ' + self.message.text)
