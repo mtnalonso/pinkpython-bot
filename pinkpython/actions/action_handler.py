@@ -1,10 +1,14 @@
 import sys
 import inspect
+import logging
 
 from actions.feed import Feed
 from actions.greeting import Greeting
 from actions.error import Error
 from actions.dummy import Dummy
+
+
+logger = logging.getLogger(__name__)
 
 
 class ActionHandler:
@@ -14,6 +18,7 @@ class ActionHandler:
         self.__load_actions()
 
     def __load_actions(self):
+        logger.info('Loading actions')
         self.actions['dummy'] = Dummy()
         self.actions['error'] = Error()
         self.actions['feed'] = Feed()
