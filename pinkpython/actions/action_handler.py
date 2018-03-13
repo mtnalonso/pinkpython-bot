@@ -1,6 +1,8 @@
 import sys
 import inspect
 import logging
+from os import listdir
+from os.path import isfile, join, splitext, dirname, abspath
 
 from actions.feed import Feed
 from actions.greeting import Greeting
@@ -23,13 +25,28 @@ class ActionHandler:
         self.actions['error'] = Error()
         self.actions['feed'] = Feed()
         self.actions['greeting'] = Greeting()
-        #for name, action in self.__find_actions():
-        #    self.actions[name] = action()
+        for name, action in self.__find_actions():
+            self.actions[name] = action()
 
     def __find_actions(self):
-        for name, obj in inspect.getmembers(sys.modules[__name__]):
-            if inspect.isclass(obj) and __name__ != obj.__module__:
-                yield name.lower(), obj
+        for action_filename in self.__get_actions_filenames():
+            module = __import__(action_filename, locals(), globals())
+            class_ = getattr(module, dir(module)[0])
+            yield action_filename, class_
+
+    def __get_actions_filenames(self):
+        path = dirname(abspath(__file__))
+        files = [splitext(f)[0] for f in listdir(path) if isfile(join(path,f))]
+        files = self.__filter_action_files(files)
+        return files
+
+    def __filter_action_files(self, found_files):
+        files_to_remove = ['__init__', 'action', 'action_handler']
+        filtered_files = [f for f in found_files if f not in files_to_remove]
+        filtered_files = [f for f in filtered_files if f[0] not in ['.', '_']]
+
+        logger.info('filtered files {}'.format(filtered_files))
+        return filtered_files
 
     def process_message(self, message):
         params = message.parameters
