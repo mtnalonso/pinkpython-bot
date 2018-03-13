@@ -1,6 +1,7 @@
 import sys
 import inspect
 import logging
+from importlib import import_module
 from os import listdir
 from os.path import isfile, join, splitext, dirname, abspath
 
@@ -21,17 +22,13 @@ class ActionHandler:
 
     def __load_actions(self):
         logger.info('Loading actions')
-        self.actions['dummy'] = Dummy()
-        self.actions['error'] = Error()
-        self.actions['feed'] = Feed()
-        self.actions['greeting'] = Greeting()
         for name, action in self.__find_actions():
             self.actions[name] = action()
 
     def __find_actions(self):
         for action_filename in self.__get_actions_filenames():
-            module = __import__(action_filename, locals(), globals())
-            class_ = getattr(module, dir(module)[0])
+            module = import_module('actions.' + action_filename)
+            class_ = getattr(module, dir(module)[1])
             yield action_filename, class_
 
     def __get_actions_filenames(self):
