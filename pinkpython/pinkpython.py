@@ -1,4 +1,7 @@
 import argparse
+import logging
+import logging.handlers
+from logging.config import dictConfig
 from queue import Queue
 
 from channels.channel import ChannelFactory, TWITTER, TELEGRAM
@@ -7,11 +10,38 @@ from inbox import InboxConsumer
 from outbox import OutboxConsumer
 
 
+logger = logging.getLogger(__name__)
+
+DEFAULT_LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+}
+
+
 def init_logger(debug):
-    import logging
-    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
-                        filename='python_memories.log', filemode='w',
-                        level=logging.INFO)
+    dictConfig(DEFAULT_LOGGING)
+    formatter = logging.Formatter(
+            '%(asctime)s - %(levelname)-8s %(name)-12s: %(message)s')
+    logging.root.setLevel(logging.DEBUG)
+
+    if debug:
+        activate_stream_logging(formatter)
+    activate_file_logging(formatter)
+
+
+def activate_file_logging(formatter):
+    file_handler = logging.FileHandler('python_memories.log',
+                                       mode='w', encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(formatter)
+    logging.root.addHandler(file_handler)
+
+
+def activate_stream_logging(formatter):
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(formatter)
+    logging.root.addHandler(console_handler)
 
 
 def load_args():
