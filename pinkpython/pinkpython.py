@@ -7,15 +7,18 @@ from inbox import InboxConsumer
 from outbox import OutboxConsumer
 
 
-def init_logger():
+def init_logger(debug):
     import logging
-    logging.basicConfig(filename='python_memories.log', filemode='w',
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
+                        filename='python_memories.log', filemode='w',
                         level=logging.INFO)
 
 
 def load_args():
     parser = argparse.ArgumentParser(prog='pinkpython.py')
     parser.add_argument('-c', '--channel', help='Start only given channel')
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Show debugging information on shell')
     return parser.parse_args()
 
 
@@ -51,7 +54,6 @@ def start_consumers(inbox_queue, outbox_queue, broadcaster):
 
 
 if __name__ == '__main__':
-    init_logger()
-
     args = load_args()
+    init_logger(args.debug)
     main(args.channel)
