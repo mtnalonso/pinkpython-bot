@@ -79,3 +79,4 @@ class TestGreetingAction(TestAction):
         response = self.get_response_from_queue()
 
         assert response.text in self.valid_responses
+

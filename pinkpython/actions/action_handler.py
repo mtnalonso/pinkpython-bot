@@ -5,11 +5,6 @@ from importlib import import_module
 from os import listdir
 from os.path import isfile, join, splitext, dirname, abspath
 
-from actions.feed import Feed
-from actions.greeting import Greeting
-from actions.error import Error
-from actions.dummy import Dummy
-
 
 logger = logging.getLogger(__name__)
 
