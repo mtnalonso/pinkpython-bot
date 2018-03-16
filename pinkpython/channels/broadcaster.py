@@ -17,7 +17,7 @@ class Broadcaster:
         self.channels = {}
 
     def send_message(self, message):
-        logging.info('Redirecting to: ' + message.channel)
+        logger.info('Redirecting to: ' + message.channel)
         self.channels[message.channel].send_reply(message)
 
     def add_channel(self, channel_name, channel_instance):

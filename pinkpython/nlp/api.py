@@ -1,6 +1,12 @@
 import json
+import logging
+
 import apiai
+
 from nlp.nlp import NLP
+
+
+logger = logging.getLogger(__name__)
 
 
 class APINLP(NLP):
@@ -15,7 +21,11 @@ class APINLP(NLP):
         return json.loads(response.read().decode('utf-8'))
 
     def get_action(self, result):
-        return result['action']
+        try:
+            return result['action']
+        except KeyError:
+            logging.error['There is no action defined for this action']
+            return 'error'
 
     def build_request(self, message):
         request = self.apiai.text_request()
