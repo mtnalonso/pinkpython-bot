@@ -25,6 +25,10 @@ def __get__doc_from_module_name(module_name):
     return eval(module_name).__doc__
 
 
+def attack_command():
+    return "(YOU DON'T HAVE ENOUGH GYM BADGES TO PERFORM THIS ACTION)"
+
+
 def run_command(command):
     logger.info(command)
     try:

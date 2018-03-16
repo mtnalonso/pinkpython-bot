@@ -4,7 +4,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from credentials import TELEGRAM_TOKEN
 from channels.channel import Channel
-from channels.telegram_commands import get_documentation, run_command
+from channels.telegram_commands import get_documentation, run_command, attack_command
 from messages.telegram_message import TelegramMessage
 
 
@@ -24,6 +24,7 @@ class TelegramChannel(Channel, Updater):
         self.__add_command('start', self.__start)
         self.__add_command('hello', self.__hello)
         self.__add_command('doc', self.__doc)
+        self.__add_command('attack', self.__attack)
 
     def __add_command(self, label, function):
         command_handler = CommandHandler(label, function)
@@ -47,6 +48,11 @@ class TelegramChannel(Channel, Updater):
         doc_query = self.__get_message_command('doc', update)
         documentation = get_documentation(doc_query)
         update.message.reply_text(documentation)
+
+    def __attack(self, bot, update):
+        logger.info('[attack]: {}'.format(update))
+        msg = attack_command()
+        update.message.reply_text(msg)
 
     def __run(self, bot, update):
         command = self.__get_message_command('run', update)
