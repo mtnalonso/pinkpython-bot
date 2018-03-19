@@ -45,15 +45,15 @@ class NLP(ABC):
 
 class NLPFactory:
     from nlp.rasa import RasaNLP
-    from nlp.api import APINLP
+    from nlp.dialogflow import DialogflowNLP
 
     CLASSES = {
-        'api': APINLP,
+        'dialogflow': DialogflowNLP,
         'rasa': RasaNLP
     }
 
     @staticmethod
-    def create(nlp_api=None):
-        nlp_label = nlp_api or config.NLP
+    def create(nlp_dialogflow=None):
+        nlp_label = nlp_dialogflow or config.NLP
         nlp = NLPFactory.CLASSES.get(nlp_label)
         return nlp()

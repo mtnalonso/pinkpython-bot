@@ -2,7 +2,7 @@ import unittest
 import pytest
 
 from nlp.nlp import NLPFactory, NLPResponseError, validate_response
-from nlp.api import APINLP
+from nlp.dialogflow import DialogflowNLP
 from nlp.rasa import RasaNLP
 
 
@@ -10,9 +10,9 @@ class TestNLPFactory(unittest.TestCase):
     def setUp(self):
         self.factory = NLPFactory
 
-    def test_create_APIAI_instance(self):
-        api_instance = self.factory.create('api')
-        assert isinstance(api_instance, APINLP)
+    def test_create_Dialogflow_instance(self):
+        dialogflow_instance = self.factory.create('dialogflow')
+        assert isinstance(dialogflow_instance, DialogflowNLP)
 
     def test_create_RasaNLP_instance(self):
         rasa_instance = self.factory.create('rasa')

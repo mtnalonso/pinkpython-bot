@@ -5,8 +5,12 @@ A python bot which needs to be feeded :snake:
 
 - Python3
 - pip
-- A twitter app account
-- An Api.ai account (in case of use it as NLP)
+
+##### Optional (but recommended)
+- A Twitter app account
+- A Dialogflow account (in case of use it as NLP)
+- A Telegram bot
+
 
 ## Installation
 
@@ -14,11 +18,7 @@ A python bot which needs to be feeded :snake:
     $ cd pinkpython-bot
     $ pip install -r requirements.txt
 
-To use rasa_nlu as NLP run:
-
-    $ sh setup.sh
-
-Create a credentials.py file as follows:
+To use Twitter, Telegram and Dialogflow, create a credentials.py file as follows:
 
     CONSUMER_KEY = 'your_twitter_consumer_key'
     CONSUMER_SECRET = 'your_twitter_consumer_secret_key'
@@ -27,9 +27,13 @@ Create a credentials.py file as follows:
 
     TELEGRAM_TOKEN = 'your_telegram_bot_token'
 
-    # only necessary if using API.ai
-    APIAI_ACCESS_TOKEN_DEVELOPER = 'your_apiai_dev_token'
-    APIAI_ACCESS_TOKEN_CLIENT = 'your_apiai_prod_token'
+    # only necessary if using Dialogflow
+    DIALOGFLOW_ACCESS_TOKEN_DEVELOPER = 'your_dialogflow_dev_token'
+    DIALOGFLOW_ACCESS_TOKEN_CLIENT = 'your_dialogflow_prod_token'
+
+To use rasa_nlu as NLP run:
+
+    $ sh setup.sh
 
 ## Run
 

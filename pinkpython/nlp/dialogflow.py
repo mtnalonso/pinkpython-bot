@@ -9,11 +9,11 @@ from nlp.nlp import NLP
 logger = logging.getLogger(__name__)
 
 
-class APINLP(NLP):
+class DialogflowNLP(NLP):
     def __init__(self):
-        super(APINLP, self).__init__()
-        from credentials import APIAI_ACCESS_TOKEN_DEVELOPER
-        self.apiai = apiai.ApiAI(APIAI_ACCESS_TOKEN_DEVELOPER)
+        super(DialogflowNLP, self).__init__()
+        from credentials import DIALOGFLOW_ACCESS_TOKEN_DEVELOPER
+        self.dialogflow = apiai.ApiAI(DIALOGFLOW_ACCESS_TOKEN_DEVELOPER)
 
     def send_request(self, message):
         request = self.build_request(message)
@@ -28,7 +28,7 @@ class APINLP(NLP):
             return 'error'
 
     def build_request(self, message):
-        request = self.apiai.text_request()
+        request = self.dialogflow.text_request()
         request.query = message
         request.lang = self.language
         request.session_id = self.session_id
