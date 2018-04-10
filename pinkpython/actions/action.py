@@ -1,5 +1,5 @@
 from abc import ABC
-from random import randrange
+from random import choice
 
 
 class Action(ABC):
@@ -11,5 +11,5 @@ class Action(ABC):
         pass
 
     def get_response_message(self):
-        index = randrange(len(self.responses))
-        return self.responses[index]
+        return choice(self.responses)
+

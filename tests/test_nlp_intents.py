@@ -1,6 +1,6 @@
 import unittest
 import pytest
-from random import randrange
+from random import choice
 
 from nlp.nlp import NLPFactory
 from messages.message import Message
@@ -18,8 +18,7 @@ class TestIntentFeed(unittest.TestCase):
         self.food = None
 
     def create_message(self):
-        index = randrange(len(foods))
-        self.food = foods[index]
+        self.food = choice(foods)
         message = Message('Here\'s a {0} for u'.format(self.food))
         return message
 
