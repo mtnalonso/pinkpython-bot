@@ -1,4 +1,4 @@
-from random import randrange
+from random import choice
 from actions.action import Action
 
 
@@ -16,5 +16,4 @@ class Error(Action):
         pass
 
     def get_response_message(self):
-        index = randrange(len(self.responses))
-        return self.responses[index]
+        return choice(self.responses)

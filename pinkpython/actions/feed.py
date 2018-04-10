@@ -1,5 +1,5 @@
 import logging
-from random import randrange
+from random import choice
 from actions.action import Action
 
 
@@ -23,8 +23,7 @@ class Feed(Action):
         self.__process_params(params)
 
     def get_response_message(self):
-        index = randrange(len(self.responses))
-        return self.responses[index].format(self.food)
+        return choice(self.responses).format(self.food)
 
     def __process_params(self, params):
         self.params = params
